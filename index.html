@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will you be my Valentine? 💕</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #ffeef8 0%, #ffe0f0 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(255, 105, 180, 0.3);
+            max-width: 500px;
+        }
+
+        h1 {
+            color: #ff1493;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .heart {
+            font-size: 80px;
+            margin: 20px 0;
+            animation: heartbeat 1.5s infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.1); }
+            50% { transform: scale(1); }
+        }
+
+        .question {
+            font-size: 1.5em;
+            color: #ff69b4;
+            margin: 30px 0;
+            font-weight: 600;
+        }
+
+        .buttons {
+            margin-top: 40px;
+            position: relative;
+            width: 100%;
+            height: 220px;
+        }
+
+        button {
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            position: absolute;
+            transition: transform 0.2s;
+        }
+
+        #yesBtn {
+            background: linear-gradient(135deg, #ff1493 0%, #ff69b4 100%);
+            color: white;
+            box-shadow: 0 5px 15px rgba(255, 20, 147, 0.4);
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        #yesBtn:hover {
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        #noBtn {
+            background: linear-gradient(135deg, #e0e0e0 0%, #f0f0f0 100%);
+            color: #666;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, 50px);
+            transition: all 0.25s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .success {
+            display: none;
+        }
+
+        .success.show {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .yay {
+            font-size: 4em;
+            color: #ff1493;
+            font-weight: bold;
+            margin: 20px 0;
+            animation: bounce 1s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .flowers {
+            font-size: 60px;
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .flower {
+            opacity: 0;
+            animation: grow 0.6s ease-out forwards;
+        }
+
+        .flower:nth-child(1) { animation-delay: 0.1s; }
+        .flower:nth-child(2) { animation-delay: 0.2s; }
+        .flower:nth-child(3) { animation-delay: 0.3s; }
+        .flower:nth-child(4) { animation-delay: 0.4s; }
+        .flower:nth-child(5) { animation-delay: 0.5s; }
+        .flower:nth-child(6) { animation-delay: 0.6s; }
+
+        @keyframes grow {
+            from { opacity: 0; transform: scale(0) rotate(-180deg); }
+            to { opacity: 1; transform: scale(1) rotate(0); }
+        }
+
+        .message {
+            font-size: 1.3em;
+            color: #ff69b4;
+            margin-top: 20px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+    <div id="question-page">
+        <h1>Hey Akriti! 💝</h1>
+        <div class="heart">❤️</div>
+        <p class="question">Will you be my Valentine?</p>
+
+        <div class="buttons">
+            <button id="yesBtn" onclick="showSuccess()">Yes! 💕</button>
+            <button id="noBtn">No</button>
+        </div>
+    </div>
+
+    <div id="success-page" class="success">
+        <div class="yay">YAYYYY! 🎉</div>
+        <div class="flowers">
+            <span class="flower">🌹</span>
+            <span class="flower">🌺</span>
+            <span class="flower">🌸</span>
+            <span class="flower">🌼</span>
+            <span class="flower">🌻</span>
+            <span class="flower">💐</span>
+        </div>
+        <p class="message">I'm so happy! Can't wait to celebrate with you! 💖</p>
+    </div>
+
+</div>
+
+<script>
+const noBtn = document.getElementById('noBtn');
+const yesBtn = document.getElementById('yesBtn');
+const container = document.querySelector('.buttons');
+
+function isOverlapping(x, y, noRect, yesRect, containerRect) {
+    // Increased buffer to ensure no overlap
+    const buffer = 30;
+
+    const noLeft = x;
+    const noRight = x + noRect.width;
+    const noTop = y;
+    const noBottom = y + noRect.height;
+
+    const yesLeft = yesRect.left - containerRect.left;
+    const yesRight = yesLeft + yesRect.width;
+    const yesTop = yesRect.top - containerRect.top;
+    const yesBottom = yesTop + yesRect.height;
+
+    // Check if rectangles overlap (with buffer)
+    return !(
+        noRight + buffer < yesLeft - buffer ||
+        noLeft - buffer > yesRight + buffer ||
+        noBottom + buffer < yesTop - buffer ||
+        noTop - buffer > yesBottom + buffer
+    );
+}
+
+noBtn.addEventListener('mouseenter', (e) => {
+    const containerRect = container.getBoundingClientRect();
+    const yesRect = yesBtn.getBoundingClientRect();
+    const noRect = noBtn.getBoundingClientRect();
+    
+    // Get mouse position relative to container
+    const mouseX = e.clientX - containerRect.left;
+    const mouseY = e.clientY - containerRect.top;
+    
+    // Minimum distance from cursor (make it hard to catch!)
+    const minDistance = 180;
+    let x, y, attempts = 0;
+    const maxAttempts = 500;
+    let foundPosition = false;
+
+    // First priority: find position that doesn't overlap AND is far from cursor
+    do {
+        x = Math.random() * (containerRect.width - noRect.width);
+        y = Math.random() * (containerRect.height - noRect.height);
+        
+        // Calculate distance from cursor to button center
+        const buttonCenterX = x + noRect.width / 2;
+        const buttonCenterY = y + noRect.height / 2;
+        const distance = Math.sqrt(
+            Math.pow(buttonCenterX - mouseX, 2) + 
+            Math.pow(buttonCenterY - mouseY, 2)
+        );
+        
+        // Check if this position is good (no overlap and far enough)
+        if (!isOverlapping(x, y, noRect, yesRect, containerRect) && distance >= minDistance) {
+            foundPosition = true;
+            break;
+        }
+        
+        attempts++;
+    } while (attempts < maxAttempts);
+
+    // If we didn't find a perfect position, prioritize no overlap over distance
+    if (!foundPosition) {
+        attempts = 0;
+        do {
+            x = Math.random() * (containerRect.width - noRect.width);
+            y = Math.random() * (containerRect.height - noRect.height);
+            
+            if (!isOverlapping(x, y, noRect, yesRect, containerRect)) {
+                foundPosition = true;
+                break;
+            }
+            attempts++;
+        } while (attempts < maxAttempts);
+    }
+
+    // Ensure button stays within bounds
+    x = Math.max(0, Math.min(x, containerRect.width - noRect.width));
+    y = Math.max(0, Math.min(y, containerRect.height - noRect.height));
+
+    noBtn.style.left = x + 'px';
+    noBtn.style.top = y + 'px';
+    noBtn.style.transform = 'none';
+});
+
+function showSuccess() {
+    document.getElementById('question-page').style.display = 'none';
+    document.getElementById('success-page').classList.add('show');
+}
+</script>
+
+</body>
+</html>
